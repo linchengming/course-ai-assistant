@@ -94,7 +94,8 @@ class RAGService:
             return 0
         try:
             return self.vectorstore._collection.count()
-        except:
+        except Exception as e:
+            logger.warning(f"Error getting document count: {e}")
             return 0
     
     def retrieve_documents(

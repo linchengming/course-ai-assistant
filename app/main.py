@@ -1,6 +1,7 @@
 """
 FastAPI main application entry point.
 """
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -14,17 +15,36 @@ from app.utils.logger import setup_logger
 logger = setup_logger(__name__)
 settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown events."""
+    # Startup
+    logger.info("=" * 50)
+    logger.info("Course AI Assistant Starting...")
+    logger.info(f"Host: {settings.app_host}:{settings.app_port}")
+    logger.info(f"Debug: {settings.debug}")
+    logger.info(f"Vector DB: {settings.vectordb_path}")
+    logger.info("=" * 50)
+    
+    yield
+    
+    # Shutdown
+    logger.info("Course AI Assistant Shutting Down...")
+
+
 # Create FastAPI app
 app = FastAPI(
     title="Course AI Assistant",
     description="AI-powered course consultation assistant with RAG",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
-# Add CORS middleware
+# Add CORS middleware (restrict in production)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # TODO: Restrict to specific domains in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -46,23 +66,6 @@ async def root():
     if static_file.exists():
         return FileResponse(static_file)
     return {"message": "Course AI Assistant API", "docs": "/docs"}
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Run on application startup."""
-    logger.info("=" * 50)
-    logger.info("Course AI Assistant Starting...")
-    logger.info(f"Host: {settings.app_host}:{settings.app_port}")
-    logger.info(f"Debug: {settings.debug}")
-    logger.info(f"Vector DB: {settings.vectordb_path}")
-    logger.info("=" * 50)
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Run on application shutdown."""
-    logger.info("Course AI Assistant Shutting Down...")
 
 
 if __name__ == "__main__":

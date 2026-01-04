@@ -3,7 +3,6 @@ Reranking service to improve retrieval quality.
 Uses similarity scoring to rerank retrieved documents.
 """
 from typing import List, Tuple
-import numpy as np
 from langchain.schema import Document
 from app.utils.logger import setup_logger
 
