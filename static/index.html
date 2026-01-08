@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程咨询AI助手 - Course AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎓 课程咨询AI助手</h1>
+            <p class="subtitle">基于RAG技术的智能课程顾问</p>
+        </header>
+
+        <div class="chat-container">
+            <div class="messages" id="messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>您好！我是您的课程顾问助手。我可以帮您了解课程信息、退费政策等问题。请问有什么可以帮助您的吗？</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <textarea 
+                    id="userInput" 
+                    class="user-input" 
+                    placeholder="请输入您的问题..." 
+                    rows="1"
+                ></textarea>
+                <button id="sendButton" class="send-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="clearButton" class="clear-button">清空对话</button>
+            <button id="statsButton" class="stats-button">查看统计</button>
+        </div>
+
+        <footer class="footer">
+            <p>💡 提示：您可以询问课程内容、退费政策、学习时间等问题</p>
+        </footer>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>📊 使用统计</h2>
+            <div id="statsContent" class="stats-content">
+                <div class="stat-item">
+                    <span class="stat-label">总查询数:</span>
+                    <span class="stat-value" id="totalQueries">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">平均响应时间:</span>
+                    <span class="stat-value" id="avgResponseTime">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">准确率:</span>
+                    <span class="stat-value" id="accuracyRate">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">知识库文档数:</span>
+                    <span class="stat-value" id="docCount">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
